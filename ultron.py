@@ -96,3 +96,4 @@ if __name__ == '__main__':
             speak(f'Correct Sentence is {sentence}')
         if 'q' == input('\nEnter "Q" to Exit or press any other key : ').lower():
             break
+
