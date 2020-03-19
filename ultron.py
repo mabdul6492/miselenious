@@ -9,8 +9,8 @@ engine.setProperty('rate', 150)
 engine.setProperty('volume', 1)
 
 
-def speak(audio):
-    print('\nUltron : ' + audio)
+def speak(audio, speaker='Ultron'):
+    print(f'\n{speaker} : {audio}')
     engine.say(audio)
     engine.runAndWait()
 
@@ -37,25 +37,18 @@ def take_command():
 
     try:
         print('recognizing....')
-        response = r.recognize_google(audio, language='en-IN')
-        speak(response)
+        response = r.recognize_google(audio)
+        speak(response, speaker='User')
     except Exception as e:
         print(e)
-        print('Say that again please...')
+        speak('Say that again please...')
         response = take_command()
         return response
     return response.lower()
 
 
-def teacher(alphabet_objects):
+def teacher():
     alphabet = random.choice('abcdefghijklmnopqrstuvwxyz')
-    alphabet_objects = random.choice(alphabet_objects[alphabet])
-    sentence = f'{alphabet} for {alphabet_objects}'
-    speak(sentence)
-    return sentence.lower()
-
-
-if __name__ == '__main__':
     alphabet_objects = {
         'a': ['alligator', 'ambulance', 'anchor', 'ant', 'anteater', 'apple', 'aquarium', 'astronaut'],
         'b': ['balloon', 'baker', 'bat', 'bear', 'bee', 'boat', 'broccoli', 'butterfly'],
@@ -84,14 +77,22 @@ if __name__ == '__main__':
         'y': ['yacht', 'yak', 'yarn', 'yoyo'],
         'z': ['zebra', 'zigzag', 'zipper', 'zoo'],
     }
+    alphabet_objects = random.choice(alphabet_objects[alphabet])
+    sentence = f'{alphabet} for {alphabet_objects}'
+    speak(sentence)
+    return sentence.lower()
+
+
+if __name__ == '__main__':
     wish_me()
 
     while True:
-        sentence = teacher(alphabet_objects)
+        sentence = teacher()
         response = take_command()
         if sentence == response:
             speak('You are Correct')
         else:
             speak('You are not Correct')
+            speak(f'Correct Sentence is {sentence}')
         if 'q' == input('\nEnter "Q" to Exit or press any other key : ').lower():
             break
